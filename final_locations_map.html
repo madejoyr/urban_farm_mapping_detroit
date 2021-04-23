@@ -1,0 +1,67 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Final Urban Farm Location Recs</title>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<link 
+	rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   	integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   	crossorigin=""
+/>
+<script 
+ 	src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   	integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   	crossorigin=""
+></script>
+<style type="text/css">
+	#map {
+		width:600px;
+		height:500px;
+	}
+	h1 {
+		font-family: Arial;
+	}
+	
+</style>
+</head>
+
+<body>
+
+	<h1>Final Recommended Locations for Urban Farms in Detroit</h1>
+	<div id="map"></div>
+
+	<script type="text/javascript">
+		var a2_mod = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		});
+		
+		var map = L.map('map', {layers: [a2_mod]});
+		
+		map.setView([42.3840, -83.1009], 11);
+
+		var geo_json = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-82.9849378,42.4371757]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-83.1553788,42.3825684]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-83.214565,42.354872]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-83.1954242,42.3736326]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-83.1375073,42.3180324]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-83.2103171,42.4193042]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-82.9359567,42.413678]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-83.0527119,42.4361828]}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-83.1191064,42.3633708]}}]}';
+
+		var geodata = JSON.parse(geo_json);
+
+		var geolayer = L.geoJson(geodata, {onEachFeature: showPopup});
+
+		geolayer.addTo(map);
+
+		function showPopup(feature, layer) {
+			var key, val;
+			var content = [];
+			for (key in feature.properties) {
+				val = feature.properties[key];
+				if (key == "Image URL") {
+					val = '<img src="' + val + '"  width="150" />';
+				}
+				content.push("<strong>" + key + ":</strong> " + val);
+			}
+			layer.bindPopup(content.join("<br />"));
+		}
+
+
+	
+
+	</script>
+
+</body>
+</html>
